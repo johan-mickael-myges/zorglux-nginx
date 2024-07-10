@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  php:
+    image: php:8.1-fpm
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+    depends_on:
+      - postgres
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - php
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - target: 5432
+        published: ${POSTGRES_PORT:-5432}
+        protocol: tcp
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      # You should definitely change the password in production
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data:rw
+
+volumes:
+  postgres_data:
