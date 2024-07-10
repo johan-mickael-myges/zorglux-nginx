@@ -1,0 +1,20 @@
+{
+  "entrypoints": {
+    "app": {
+      "css": [
+        "/build/app.css"
+      ],
+      "js": [
+        "/build/app.js"
+      ]
+    },
+    "quill": {
+      "css": [
+        "/build/quill.css"
+      ],
+      "js": [
+        "/build/quill.js"
+      ]
+    }
+  }
+}

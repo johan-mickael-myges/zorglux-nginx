@@ -1,0 +1,11 @@
+twig:
+    file_name_pattern: '*.twig'
+    paths:
+        '%kernel.project_dir%/templates/components': components
+        '%kernel.project_dir%/templates/common': common
+        '%kernel.project_dir%/templates/public': public
+        '%kernel.project_dir%/templates/gallery': gallery
+
+when@test:
+    twig:
+        strict_variables: true

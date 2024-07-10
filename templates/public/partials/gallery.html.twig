@@ -1,0 +1,24 @@
+{% set images = images|default([]) %}
+
+{% set withMoreLink = withMoreLink|default(false) %}
+
+{% set grid = grid|default('md:grid-cols-3 lg:grid-cols-4') %}
+
+<div class="grid grid-cols-2 {{ grid }} gap-2">
+    {% for image in images %}
+        <div class="relative">
+            <img src="{{ asset('images/gallery/' ~ image.src) }}" loading="lazy" alt="{{ image.alt }}" title="{{ image.title }}" width="500" height="500" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-50 flex justify-center items-center">
+                <a href="{{ asset('images/gallery/' ~ image.src) }}" title="{{ image.title }}" target="_blank" class="text-white text-2xl">
+                    <i class="fas fa-search hidden group-"></i>
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% if withMoreLink %}
+    <div class="py-4 text-center border-t border-t-gray-100">
+        <a href="{{ path('gallery_index') }}" class="text-sm text-gray-700">Voir plus de photos</a>
+    </div>
+{% endif %}

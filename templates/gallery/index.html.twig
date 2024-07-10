@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% set title = "Galerie Zorglux : Découvrez Nos Images Futuristes et Innovantes" %}
+{% set description = "Explorez la galerie d'images de Zorglux, mettant en avant des scènes futuristes et des concepts innovants liés à SEO et blogging. Admirez notre collection visuelle qui inspire et reflète notre passion pour la technologie et la créativité." %}
+{% set logoUrl = 'https://zorglux-bucket.s3.eu-north-1.amazonaws.com/zorglux.webp' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ absolute_url(path('gallery_index')) }}">
+{% endblock %}
+
+{% block meta %}
+    <meta name="description" content="{{ description }}">
+    <meta name="author" content="Zorglux">
+{% endblock %}
+
+{% block meta_og %}
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:description" content="{{ description }}">
+    <meta property="og:image" content="{{ logoUrl }}">
+    <meta property="og:url" content="{{ path('gallery_index') }}">
+    <meta property="og:type" content="website">
+{% endblock %}
+
+{% block meta_twitter %}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ title }}">
+    <meta name="twitter:description" content="{{ description }}">
+    <meta name="twitter:image" content="{{ logoUrl }}">
+{% endblock %}
+
+{% block jsonld %}
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Galerie Zorglux",
+            "description": "{{ description }}",
+            "url": "{{ absolute_url(path('public_index')) }}gallery",
+            "publisher": {
+                "@type": "Organization",
+                "name": "Zorglux",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "{{ logoUrl }}"
+                }
+            }
+        }}
+    </script>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "ImageGallery",
+            "name": "Galerie de Zorglux",
+            "description": "Explorez notre galerie d'images de Zorglux, présentant des visuels vibrants et technologiques.",
+            "url": "{{ absolute_url(path('gallery_index')) }}",
+            "image": [
+                {% for image in galleries %}
+                    {
+                        "@type": "ImageObject",
+                        "contentUrl": "{{ absolute_url(asset('images/gallery/' ~ image.src)) }}",
+                        "description": "{{ image.alt }}",
+                        "name": "{{ image.title }}"
+                    }{% if not loop.last %},{% endif %}
+                {% endfor %}
+            ]
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+    {% set contentWrapperClasses = [
+        'flex',
+        'flex-row',
+        'grow',
+        'justify-center',
+        'items-center',
+    ]|join(' ') %}
+
+    {% set contentClasses = [
+        'w-full',
+        'px-5',
+        'md:w-2/3',
+    ]|join(' ') %}
+
+    <header {{ stimulus_controller('menu_toggler') }} class="sticky top-0 bg-white z-[9990]">
+        {% include '@common/navbar.html.twig' %}
+    </header>
+
+    <div id="gallery" class="{{ contentWrapperClasses }} mb-5">
+        <div class="{{ contentClasses }}">
+            <h1 class="font-bold">Catalogue d'images Zorglux</h1>
+            <p class="mb-5 text-gray-500">Les images ci-dessous sont générées par ChatGPT-Dall-E, un modèle de génération d'images de haute qualité. Les images sont créées à partir de descriptions textuelles et sont destinées à inspirer et à refléter notre passion pour la technologie et la créativité.</p>
+            {% include '@public/partials/gallery.html.twig' with {
+                images: galleries,
+                random: true,
+            } %}
+        </div>
+    </div>
+
+    <hr>
+
+    <div id="latest-posts" class="{{ contentWrapperClasses }}">
+        <div class="{{ contentClasses }}">
+            <h2 class="font-bold">Nos derniers posts</h2>
+            {% include '@public/partials/latest-posts.html.twig' %}
+        </div>
+    </div>
+
+    {% include '@common/footer.html.twig' %}
+{% endblock %}

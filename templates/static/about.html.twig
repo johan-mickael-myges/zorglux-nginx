@@ -1,0 +1,181 @@
+{% extends 'base.html.twig' %}
+
+{% set title = 'À propos de Zorglux - La Plateforme Dynamique pour Blogueurs' %}
+{% set description = "Zorglux, la plateforme dynamique pour blogueurs, offre des outils innovants et une communauté engagée pour partager vos histoires, idées et expériences. Rejoignez-nous pour découvrir des ressources exceptionnelles et connecter avec des passionnés du monde entier." %}
+{% set logoUrl = 'https://zorglux-bucket.s3.eu-north-1.amazonaws.com/zorglux.webp' %}
+{% set videoUrl = 'https://zorglux-bucket.s3.eu-north-1.amazonaws.com/videos/Maîtrisez le SEO avec Zorglux Works!.mp4' %}
+{% set videoTitle = 'Maîtrisez le SEO avec Zorglux Works!' %}
+{% set videoDescription = 'Découvrez Zorglux en vidéo et apprenez à maîtriser le SEO avec notre plateforme.' %}
+{% set videoPoster = 'https://zorglux-bucket.s3.eu-north-1.amazonaws.com/Booste ton site avec Zorglux Works !.webp' %}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ absolute_url(path('public_about')) }}">
+{% endblock %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="index, follow, max-snippet:200">
+{% endblock %}
+
+{% block meta %}
+    <meta name="description" content="{{ description }}">
+    <meta name="author" content="Zorglux">
+{% endblock %}
+
+{% block meta_og %}
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:description" content="{{ description }}">
+    <meta property="og:image" content="{{ logoUrl }}">
+    <meta property="og:url" content="{{ path('public_about') }}">
+{% endblock %}
+
+{% block meta_twitter %}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ title }}">
+    <meta name="twitter:description" content="{{ description }}">
+    <meta name="twitter:image" content="{{ logoUrl }}">
+{% endblock %}
+
+{% block jsonld %}
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "headline": "{{ title }}",
+            "description": "{{ description }}",
+            "image": "{{ logoUrl }}",
+            "author": {
+                "@type": "Organization",
+                "name": "Zorglux",
+                "logo": "{{ logoUrl }}",
+                "url": "{{ absolute_url(path('public_index')) }}"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "Zorglux",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "{{ logoUrl }}"
+                }
+            },
+            "url": "{{ path('public_about') }}"
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "VideoObject",
+            "name": "{{ videoTitle }}",
+            "description": "{{ videoDescription }}",
+            "thumbnailUrl": "{{ videoPoster }}",
+            "uploadDate": "2024-07-01T00:00:00+00:00",
+            "contentUrl": "{{ videoUrl }}",
+            "embedUrl": "{{ videoUrl }}",
+            "publisher": {
+                "@type": "Organization",
+                "name": "Zorglux",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "{{ logoUrl }}"
+                }
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block body_header %}
+    {% include '@common/navbar.html.twig' %}
+{% endblock %}
+
+{% block body_content %}
+    <twig:Container>
+        <h1 class="text-4xl text-gray-800 font-extrabold mb-5">Tout le monde a une histoire à raconter 📖</h1>
+        <section id="about" class="mb-10">
+            <h2 class="text-2xl font-semibold mb-4">1. Qu'est-ce que Zorglux ? 🤔</h2>
+            <p class="mb-4">Zorglux est une plateforme dynamique conçue pour les blogueurs de tous horizons afin de partager leurs histoires, idées et expériences avec un large public. Que vous soyez un écrivain chevronné ou que vous débutiez tout juste, Zorglux offre les outils et la communauté pour faire entendre votre voix.</p>
+            <figure class="mb-6">
+                <video controls width="100%" poster="{{ videoPoster }}">
+                    <source src="{{ videoUrl }}" type="video/mp4" title="{{ videoTitle }}">
+                    Votre navigateur ne supporte pas les vidéos HTML5. Voici <a href="{{ videoUrl }}">un lien pour télécharger la vidéo</a> au lieu.
+                </video>
+                <figcaption class="text-sm text-gray-500 mt-2">{{ videoDescription }}</figcaption>
+            </figure>
+            <h3 class="text-xl font-medium mb-2">Notre Mission 🎯</h3>
+            <p class="mb-4">Notre mission chez Zorglux est de permettre aux individus de s'exprimer librement et de se connecter avec d'autres à travers un contenu significatif. Nous croyons au pouvoir des histoires pour inspirer, informer et unir les gens de tous horizons. En fournissant une plateforme inclusive, nous visons à favoriser une communauté dynamique où les voix diverses sont célébrées.</p>
+            <h3 class="text-xl font-medium mb-2">Pourquoi Choisir Zorglux ? 🌟</h3>
+            <ol class="list-decimal list-inside mb-4">
+                <li>Outils de blogging faciles à utiliser qui conviennent aussi bien aux débutants qu'aux blogueurs expérimentés.</li>
+                <li>Une communauté solidaire qui encourage l'interaction et la croissance.</li>
+                <li>Modèles de blog personnalisables pour vous aider à créer une présence en ligne unique.</li>
+                <li>Plateforme SEO-friendly pour aider votre contenu à atteindre un public plus large.</li>
+                <li>Mises à jour régulières et nouvelles fonctionnalités pour améliorer votre expérience de blogging.</li>
+            </ol>
+        </section>
+
+        <section id="features" class="mb-10">
+            <h2 class="text-2xl font-semibold mb-4">2. Fonctionnalités de Zorglux 🔧</h2>
+            <p class="mb-4">Zorglux propose une gamme de fonctionnalités conçues pour rendre le blogging simple, agréable et efficace :</p>
+            <ul class="list-disc list-inside mb-4">
+                <li><strong>Modèles Personnalisables :</strong> Choisissez parmi une variété de modèles de blog pour correspondre à votre style. Ajustez facilement les mises en page, les polices et les couleurs pour créer un blog qui vous représente.</li>
+                <li><strong>Outils SEO :</strong> Utilisez des outils intégrés pour optimiser votre contenu pour les moteurs de recherche, vous aidant à attirer plus de lecteurs et à développer votre audience.</li>
+                <li><strong>Engagement Communautaire :</strong> Connectez-vous avec d'autres blogueurs et lecteurs grâce aux commentaires, aux likes et au partage sur les réseaux sociaux. Favorisez des interactions significatives et construisez un public fidèle.</li>
+                <li><strong>Analytiques :</strong> Suivez les performances de votre blog avec des analyses détaillées et des informations. Comprenez mieux votre audience et adaptez votre contenu à leurs besoins.</li>
+                <li><strong>Options de Monétisation :</strong> Explorez diverses options de monétisation, telles que les publicités et le contenu sponsorisé, pour transformer votre passion pour le blogging en source de revenus.</li>
+                <li><strong>Adapté aux Mobiles :</strong> Zorglux assure que votre blog ait fière allure sur n'importe quel appareil, facilitant l'accès à votre contenu en déplacement.</li>
+            </ul>
+        </section>
+
+        <section id="community" class="mb-10">
+            <h2 class="text-2xl font-semibold mb-4">3. Rejoignez la Communauté Zorglux 🌍</h2>
+            <p class="mb-4">Chez Zorglux, nous croyons au pouvoir de la communauté. Notre plateforme est conçue pour vous aider à vous connecter avec des individus partageant les mêmes idées, à partager vos passions et à développer votre réseau.</p>
+            <ul class="list-disc list-inside mb-4">
+                <li><strong>Profils Interactifs :</strong> Créez un profil détaillé pour mettre en valeur vos intérêts, blogs et réalisations.</li>
+                <li><strong>Discussions de Groupe :</strong> Participez à des discussions de groupe sur une variété de sujets. Partagez des idées, posez des questions et apprenez des autres.</li>
+                <li><strong>Événements et Webinaires :</strong> Rejoignez des événements exclusifs et des webinaires animés par des blogueurs expérimentés et des experts de l'industrie.</li>
+                <li><strong>Programmes de Mentorat :</strong> Accédez à des programmes de mentorat pour obtenir des conseils et un soutien de blogueurs chevronnés.</li>
+                <li><strong>Opportunités de Réseautage :</strong> Connectez-vous avec d'autres blogueurs et professionnels de l'industrie pour élargir votre réseau et explorer de nouvelles opportunités.</li>
+            </ul>
+        </section>
+
+        <section id="contact" class="mb-10">
+            <h2 class="text-2xl font-semibold mb-4">4. Contactez-nous 📞</h2>
+            <p class="mb-4">
+                Si vous avez des questions ou des commentaires, n'hésitez pas à <a href="{{ path('public_contact') }}" class="text-blue-500 underline">nous contacter</a>.
+            </p>
+        </section>
+    </twig:Container>
+
+    {% set contentWrapperClasses = [
+        'flex',
+        'flex-row',
+        'grow',
+        'justify-center',
+        'items-center',
+    ]|join(' ') %}
+
+    {% set contentClasses = [
+        'w-full',
+        'px-5',
+        'md:w-2/3',
+    ]|join(' ') %}
+
+    <div id="latest-posts" class="{{ contentWrapperClasses }}">
+        <div class="{{ contentClasses }}">
+            <h2 class="font-bold">Les derniers articles</h2>
+            {% include '@public/partials/latest-posts.html.twig' %}
+        </div>
+    </div>
+
+    <div class="{{ contentWrapperClasses }}">
+        <div class="{{ contentClasses }}">
+            <h2 class="font-bold">Galeries photos</h2>
+            {% include '@public/partials/gallery.html.twig' with {
+                images: galleries,
+                withMoreLink: true,
+            } %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% set footerItem = [
+    {
+        title: 'Accueil',
+        url: path('public_index'),
+    },
+    {
+        title: 'Blogs',
+        url: path('blog_index'),
+    },
+    {
+        title: 'Galeries',
+        url: path('gallery_index'),
+    },
+    {
+        title: 'Réseaux sociaux',
+        url: path('public_social_share'),
+    },
+    {
+        title: 'À propos',
+        url: path('public_about'),
+    },
+    {
+        title: 'Contact',
+        url: path('public_contact'),
+    },
+    {
+        title: 'Votre compte',
+        url: path('app_login'),
+    },
+    {
+        title: 'Rejoindre la communauté',
+        url: path('app_register'),
+    }
+] %}
+
+<div
+    class="mt-auto bg-gray-100 shadow-2xl border-t border-t-gray-100 text-gray-700 text-sm md:text-md p-5 flex flex-col md:items-center">
+
+    <div class="mb-2">
+        <ul class="m-0 list-none flex flex-col md:flex-row">
+            {% for item in footerItem %}
+                <li class="mb-2 md:mb-0 mx-2">
+                    <a href="{{ item.url }}" class="text-gray-700">{{ item.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    {% set socials = [
+        {
+            title: 'Twitter',
+            url: 'https://x.com/zorglux_works',
+            icon: 'fab fa-twitter',
+        },
+        {
+            title: 'Facebook',
+            url: 'https://www.facebook.com/zorglux/',
+            icon: 'fab fa-facebook',
+        },
+        {
+            title: 'YouTube',
+            url: 'https://www.youtube.com/@zorglux-works',
+            icon: 'fab fa-youtube',
+        },
+        {
+            title: 'TiTok',
+            url: 'https://www.tiktok.com/@zorglux.works',
+            icon: 'fab fa-tiktok',
+        },
+        {
+            title: 'LinkedIn',
+            url: 'https://www.linkedin.com/in/zorglux/',
+            icon: 'fab fa-linkedin',
+        },
+        {
+            title: 'Pinterest',
+            url: 'https://www.pinterest.fr/zorgluxx/',
+            icon: 'fab fa-pinterest',
+        }
+    ] %}
+
+    <div class="flex justify-center">
+        {% for social in socials %}
+            <a href="{{ social.url }}" target="_blank" aria-label="{{ social.title }}" title="{{ social.title }}" class="text-gray-800 m-3">
+                <i class="{{ social.icon }} text-base"></i>
+            </a>
+        {% endfor %}
+    </div>
+
+    <div class="flex justify-center">
+        <small>&copy; {{ 'now'|date('Y') }} - {{ '+1 year'|date('Y') }} | Zorglux. Tous droits réservés.</small>
+    </div>
+</div>

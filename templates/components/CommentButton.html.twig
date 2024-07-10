@@ -1,0 +1,34 @@
+<div {{ attributes }}>
+    <div {% if this.withCommentsContainer is same as true %}{{ stimulus_controller('comments_toggler') }}{% endif %}>
+        {% if this.withCommentsContainer is same as true %}
+            <button
+                {{ stimulus_action('comments_toggler', 'toggle', 'click') }}
+                aria-label="Commentaires"
+                class="cursor-pointer text-gray-500"
+            >
+                <i class="{{ this.iconType }} fa-comment"></i>
+                <span>{{ this.blog.comments|length }}</span>
+            </button>
+        {% else %}
+            <a
+                title="Commentaires"
+                class="cursor-pointer text-gray-500"
+                href="{{ path('blog_read', { slug: this.blog.slug }) }}"
+            >
+                <i class="{{ this.iconType }} fa-comment"></i>
+                <span>{{ this.blog.comments|length }}</span>
+            </a>
+        {% endif %}
+
+        {% if this.withCommentsContainer is same as true %}
+        <div class="hidden md:block">
+            <twig:Comments :blog="this.blog" variant="desktop" />
+        </div>
+
+        <div class="md:hidden">
+            <twig:Comments :blog="this.blog" />
+        </div>
+        {% endif %}
+    </div>
+
+</div>

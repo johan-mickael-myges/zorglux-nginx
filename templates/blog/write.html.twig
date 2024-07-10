@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block robots %}
+    <meta name="robots" content="noindex">
+{% endblock %}
+
+{% block title %}Zorglux - Écrire un article{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+    {{ encore_entry_link_tags('quill') }}
+{% endblock %}
+
+{% block body_header %}
+    {% embed '@common/navbar.html.twig' %}
+    {% endembed %}
+{% endblock %}
+
+{% block body_content %}
+    <twig:Container>
+        <p class="my-2 text-xs text-gray-400">
+            Utilisez le formulaire ci-dessous pour rédiger votre article.
+            Soyez créatif, perspicace et assurez-vous de respecter nos directives communautaires. Bonne écriture !
+        </p>
+
+        <div {{ stimulus_controller('quill', {
+            options: {
+                placeholder: 'Écrivez votre contenu ...',
+                bounds: '#write-editor',
+            }
+        }) }}
+            class="rounded border shadow md:shadow-lg p-4"
+        >
+            {{ form_start(form, {}) }}
+            {% set inputClasses = 'text-4xl w-full border-b rounded-sm outline-none focus:border-black p-2 mb-4' %}
+
+            {{ form_widget(form.title, {
+                attr: {
+                    class: 'text-4xl w-full border-b rounded-sm outline-none focus:border-black p-2 mb-4 font-bold'
+                }
+            }) }}
+            {{ form_widget(form.description, {
+                attr: {
+                    class: 'w-full border-b rounded-sm outline-none focus:border-black p-2 mb-4'
+                }
+            }) }}
+
+            <twig:InputFile :form="form.thumbnailFile" classes="mb-4" />
+
+            {{ form_widget(form.content, {
+                attr: {
+                    'data-quill-target': 'input',
+                    'class': 'hidden'
+                }
+            }) }}
+            <div id="write-editor" class="mb-4 rounded min-h-32" {{ stimulus_target('quill', 'editor') }}></div>
+
+            <small>
+                <i class="fa-solid fa-share"></i>
+                {{ form_label(form.confidentiality) }}
+            </small>
+            {{ form_widget(form.confidentiality, {
+                attr: {
+                    'class': 'p-2 text-xs bg-gray-50 outline-none'
+                }
+            }) }}
+
+            <div class="flex flex-row justify-end">
+                <button type="submit" value="1" class="p-2 text-white rounded-ee-2xl bg-green-500">Publier</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </twig:Container>
+{% endblock %}

@@ -1,0 +1,198 @@
+{% extends '@common/user/base.html.twig' %}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ absolute_url(path('blog_read', {
+        slug: blog.slug
+    })) }}">
+{% endblock %}
+
+{% block robots %}
+    <meta name="robots" content="index, follow, max-snippet:200">
+{% endblock %}
+
+{% block meta %}
+    <meta name="description" content="{{ blog.description }}">
+    <meta name="author" content="{{ blog.author.username }}">
+{% endblock %}
+
+{% block meta_og %}
+    <meta property="og:title" content="{{ blog.title }}">
+    <meta property="og:description" content="{{ blog.description }}">
+    <meta property="og:image" content="{{ blog.thumbnail }}">
+    <meta property="og:url" content="{{ path('blog_read', { slug: blog.slug }) }}">
+{% endblock %}
+
+{% block meta_twitter %}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ blog.title }}">
+    <meta name="twitter:description" content="{{ blog.description }}">
+    <meta name="twitter:image" content="{{ blog.thumbnail }}">
+{% endblock %}
+
+{% block jsonld %}
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": "{{ path('blog_read', { slug: blog.slug }) }}"
+            },
+            "headline": "{{ blog.title }}",
+            "description": "{{ blog.description }}",
+            "image": "{{ blog.thumbnail }}",
+            "author": {
+                "@type": "Person",
+                "name": "{{ blog.author.username }}",
+                "image": "{{ blog.author.avatar|default('https://zorglux-bucket.s3.eu-north-1.amazonaws.com/default/avatar.jpg') }}"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "Zorglux",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://zorglux-bucket.s3.eu-north-1.amazonaws.com/zorglux.webp"
+                }
+            },
+            "datePublished": "{{ blog.createdAt|date('Y-m-d\\TH:i:sP') }}",
+            "dateModified": "{{ blog.updatedAt|date('Y-m-d\\TH:i:sP') }}",
+            "url": "{{ path('blog_read', { slug: blog.slug }) }}"
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "itemListElement": [
+                {% for item in blogs %}
+                    {
+                        "@type": "ListItem",
+                        "position": {{ loop.index }},
+                        "item": {
+                            "@type": "BlogPosting",
+                            "headline": "{{ item.title }}",
+                            "description": "{{ item.description }}",
+                            "articleBody": "{{ item.content|striptags|replace({ "\n": " ", "\r": " " }) }}",
+                            "datePublished": "{{ item.createdAt|date('Y-m-d\\TH:i:sP') }}",
+                            "dateModified": "{{ item.updatedAt|date('Y-m-d\\TH:i:sP') }}",
+                            "mainEntityOfPage": {
+                               "@type": "WebPage",
+                               "@id": "{{ path('blog_read', { slug: item.slug }) }}"
+                            },
+                            "url": "{{ path('blog_read', { slug: item.slug }) }}",
+                            "author": {
+                                "@type": "Person",
+                                "name": "{{ item.author.username }}"
+                            },
+                            "image": "{{ item.thumbnail }}"
+                        }
+                    }{% if not loop.last %},{% endif %}
+                {% endfor %}
+            ]
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "{{ blog.title }}",
+            "comment": [
+        {% for comment in blog.comments %}
+                {
+                    "@type": "Comment",
+                    "text": "{{ comment.content }}",
+                    "dateCreated": "{{ comment.createdAt|date('Y-m-d') }}",
+                    "author": {
+                        "@type": "Person",
+                        "name": "{{ comment.author.username }}"
+                    }
+                }{% if not loop.last %},{% endif %}
+        {% endfor %}
+        ]
+    }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": "{{ blog.title }}",
+            "commentCount": {{ blog.comments|length }},
+            "comment": [
+                {% for comment in blog.comments %}
+                    {
+                        "@type": "Comment",
+                        "text": "{{ comment.content }}",
+                        "dateCreated": "{{ comment.createdAt|date('Y-m-d\\TH:i:sP') }}",
+                        "author": {
+                            "@type": "Person",
+                            "name": "{{ comment.author.username }}"
+                        }
+                    }{% if not loop.last %},{% endif %}
+                {% endfor %}
+            ]
+        }
+    </script>
+{% endblock %}
+
+{% block title %}Zorglux - {{ blog.title }}{% endblock %}
+
+{% block body_header %}
+    {% embed '@common/navbar.html.twig' %}
+    {% endembed %}
+{% endblock %}
+
+{% block body_content %}
+    <twig:Container>
+        <h1 class="mt-8 text-5xl font-bold mb-2">{{ blog.title }}</h1>
+        <h2 class="text-lg text-gray-500 mb-4 font-normal">{{ blog.description }}</h2>
+
+        <div class="flex flex-row items-center mb-4">
+            <twig:Avatar
+                    img="{{ blog.author.avatar|default('https://zorglux-bucket.s3.eu-north-1.amazonaws.com/default/avatar.jpg') }}"
+                    classes="mr-2"
+                    imageClasses="rounded-full object-cover"
+                    size="30"
+            />
+            <div>
+                <span class="text-sm">{{ blog.author.username }}</span>
+                <div class="text-xs text-gray-500">
+                    <span>{{ blog.readingTime }} min de lecture</span>
+                    <span> . </span>
+                    <time datetime="{{ blog.createdAt|date }}">{{ blog.createdAt|date('d F Y H:i')|trans }}</time>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-y border-y-gray-100 py-3 text-sm text-gray-500 flex flex-row justify-between">
+            <div class="grid grid-cols-2 gap-2">
+                <twig:LikeButton class="col-span-1" :blog="blog"/>
+                <twig:CommentButton class="col-span-1" :blog="blog"/>
+            </div>
+
+            <div class="flex flex-row items-center">
+                <span class="mr-3 text-xs italic">Partager sur</span>
+                <div class="grid grid-cols-4 gap-2">
+                    <twig:SocialShare title="Partager sur Twitter" service="twitter" text="{{ blog.title }}" :url="app.request.uri"/>
+                    <twig:SocialShare title="Partager sur Facebook" service="facebook" :url="app.request.uri"/>
+                    <twig:SocialShare title="Partager sur Linkedin" service="linkedin" :url="app.request.uri"/>
+                    <twig:SocialShare title="Partager sur Reddit" service="reddit" :url="app.request.uri"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-row justify-center">
+            <img src="{{ blog.thumbnail }}" alt="{{ blog.title }}" class="w-full object-cover my-8" width="500" height="500"/>
+        </div>
+
+        <div class="wysiwyg font-times text-lg">
+            {{ blog.content|raw }}
+        </div>
+
+        <div class="py-5">
+            <h3 class="text-lg">Ces articles peuvent aussi vous intéresser</h3>
+            {% include '@public/partials/latest-posts.html.twig' with {
+                grid: 'md:grid-cols-2'
+            } %}
+        </div>
+    </twig:Container>
+{% endblock %}

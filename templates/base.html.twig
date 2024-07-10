@@ -1,0 +1,119 @@
+{% set defaultTitle = 'Zorglux - Plateforme de Blog Idéale pour Partager Vos Histoires et Idées' %}
+{% set defaultDescription = "Rejoignez Zorglux, la plateforme ultime pour blogueurs. Partagez vos idées et expériences avec une communauté passionnée et accédez à des outils SEO puissants et des modèles personnalisables." %}
+{% set defaultLogoUrl = 'https://zorglux-bucket.s3.eu-north-1.amazonaws.com/zorglux.webp' %}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    {% block canonical %}
+        <link rel="canonical" href="{{ absolute_url(path('public_index')) }}">
+    {% endblock %}
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ path('rss_feed') }}">
+    <link rel="icon" href="/favicon.ico?v=3" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=3">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png?v=3">
+    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png?v=3">
+    {% block robots %}
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    {% endblock %}
+    {% block keywords %}
+    {% endblock %}
+    {% block meta %}
+        <meta name="description" content="{{ description|default(defaultDescription) }}">
+        <meta name="author" content="Zorglux">
+    {% endblock %}
+
+    {% block meta_og %}
+        <meta property="og:title" content="{{ title|default(defaultTitle) }}">
+        <meta property="og:description" content="{{ description|default(defaultDescription) }}">
+        <meta property="og:image" content="{{ logoUrl|default(defaultLogoUrl) }}">
+        <meta property="og:url" content="{{ path('blog_index') }}">
+        <meta property="og:type" content="website">
+    {% endblock %}
+
+    {% block meta_twitter %}
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ title|default(defaultTitle) }}">
+        <meta name="twitter:description" content="{{ description|default(defaultDescription) }}">
+        <meta name="twitter:image" content="{{ logoUrl|default(defaultLogoUrl) }}">
+    {% endblock %}
+
+    <title>{% block title %}{{ title|default(defaultTitle) }}{% endblock %}</title>
+
+    <!-- Preload Google Fonts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap">
+    </noscript>
+
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+    <script src="https://kit.fontawesome.com/e164d72746.js" crossorigin="anonymous" defer></script>
+    {% block jsonld %}
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "Zorglux",
+                "url": "{{ absolute_url(path('public_index')) }}",
+                "logo": "{{ logoUrl|default(defaultLogoUrl) }}",
+                "sameAs": [
+                    "https://fr.zorglux.works/",
+                    "https://en.zorglux.works/",
+                    "https://zorglux.works/",
+                    "https://www.zorglux.works/"
+                ],
+                "description": "{{ description|default(defaultDescription) }}",
+                "contactPoint": {
+                    "@type": "ContactPoint",
+                    "telephone": "+33 7 69 34 87 44",
+                    "contactType": "Customer Service"
+                }
+            }}
+        </script>
+
+
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "url": "{{ absolute_url(path('public_index')) }}",
+                "name": "{{ title|default(defaultTitle) }}",
+                "description": "{{ description|default(defaultDescription) }}",
+                "publisher": {
+                    "@type": "Organization",
+                    "name": "Zorglux",
+                    "logo": {
+                        "@type": "ImageObject",
+                        "url": "{{ logoUrl|default(defaultLogoUrl) }}"
+                    }
+                }
+            }
+        </script>
+
+    {% endblock %}
+</head>
+{% block body %}
+    <body>
+    <header class="sticky top-0 left-0 z-[9990]" {{ stimulus_controller('menu_toggler') }}>
+        {% block body_header %}{% endblock %}
+    </header>
+    <main class="min-h-screen">
+        {% block body_content %}{% endblock %}
+    </main>
+    <footer>
+        {% block body_footer %}
+            {% include '@common/footer.html.twig' %}
+        {% endblock %}
+    </footer>
+    </body>
+{% endblock %}
+</html>

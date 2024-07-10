@@ -1,0 +1,6 @@
+<div {{ attributes }} itemscope itemtype="https://schema.org/Person">
+    <div class="{{ this.classes }}">
+        <img class="{{ this.getImageClasses|default('') }}" src="{{ this.getImg }}" alt="{{ this.name|default('Zorglux default avatar') }}" width="{{ this.size }}" height="{{ this.size }}" itemprop="image" />
+        <span class="{{ this.usernameClasses|default('') }}" itemprop="name">{{ this.name }}</span>
+    </div>
+</div>

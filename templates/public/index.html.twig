@@ -1,0 +1,208 @@
+{% extends 'base.html.twig' %}
+
+{% set title = "Zorglux : Votre Centre pour le Partage et l'Approfondissement des Connaissances en SEO" %}
+{% set description = "Zorglux est votre plateforme ultime pour lire, écrire et approfondir vos connaissances sur le SEO et le référencement naturel. Rejoignez une communauté d'enthousiastes et d'experts pour élargir vos horizons dans le domaine du SEO." %}
+{% set logoUrl = 'https://zorglux-bucket.s3.eu-north-1.amazonaws.com/zorglux.webp' %}
+{% set videoUrl = 'https://zorglux-bucket.s3.eu-north-1.amazonaws.com/videos/Booste ton site avec Zorglux Works !.mp4' %}
+{% set videoTitle = 'Booste ton site avec Zorglux Works !' %}
+{% set videoDescription = "Découvrez comment Zorglux Works peut vous aider à améliorer votre site web et à le rendre plus performant. Rejoignez-nous pour une expérience unique et enrichissante." %}
+{% set videoPoster = 'https://zorglux-bucket.s3.eu-north-1.amazonaws.com/Booste ton site avec Zorglux Works !.webp' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block meta %}
+    <meta name="description" content="{{ description }}">
+    <meta name="author" content="Zorglux">
+{% endblock %}
+
+{% block meta_og %}
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:description" content="{{ description }}">
+    <meta property="og:image" content="{{ logoUrl }}">
+    <meta property="og:url" content="{{ path('blog_index') }}">
+    <meta property="og:type" content="website">
+{% endblock %}
+
+{% block meta_twitter %}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ title }}">
+    <meta name="twitter:description" content="{{ description }}">
+    <meta name="twitter:image" content="{{ logoUrl }}">
+{% endblock %}
+
+{% block jsonld %}
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Zorglux",
+            "url": "{{ absolute_url(path('public_index')) }}",
+            "logo": "{{ logoUrl }}",
+            "description": "{{ description }}",
+            "sameAs": [
+                "https://fr.zorglux.works/",
+                "https://en.zorglux.works/",
+                "https://zorglux.works/",
+                "https://www.zorglux.works/"
+            ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "itemListElement": [
+                {% for blog in blogs %}
+                    {
+                        "@type": "ListItem",
+                        "position": {{ loop.index }},
+                        "item": {
+                            "@type": "BlogPosting",
+                            "headline": "{{ blog.title }}",
+                            "description": "{{ blog.description }}",
+                            "url": "{{ path('blog_read', { slug: blog.slug }) }}",
+                            "articleBody": "{{ blog.content|striptags|replace({ "\n": " ", "\r": " " }) }}",
+                            "image": "{{ blog.thumbnail }}",
+                            "author": {
+                                "@type": "Person",
+                                "name": "{{ blog.author.username }}",
+                                "image": "{{ blog.author.avatar|default('https://zorglux-bucket.s3.eu-north-1.amazonaws.com/default/avatar.jpg') }}"
+                            },
+                            "datePublished": "{{ blog.createdAt|date('Y-m-d\\TH:i:sP') }}",
+                            "dateModified": "{{ blog.updatedAt|date('Y-m-d\\TH:i:sP') }}",
+                            "publisher": {
+                                "@type": "Organization",
+                                "name": "Zorglux",
+                                "logo": {
+                                    "@type": "ImageObject",
+                                    "url": "{{ logoUrl }}"
+                                }
+                            },
+                            "mainEntityOfPage": {
+                                "@type": "WebPage",
+                                "@id": "{{ path('blog_read', { slug: blog.slug }) }}"
+                            }
+                        }
+                    }{% if not loop.last %},{% endif %}
+                {% endfor %}
+            ]
+        }
+    </script>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "ImageGallery",
+            "name": "Galerie de Zorglux",
+            "description": "Explorez notre galerie d'images de Zorglux, présentant des visuels vibrants et technologiques.",
+            "url": "{{ absolute_url(path('gallery_index')) }}",
+            "image": [
+            {% for image in galleries %}
+                {
+                    "@type": "ImageObject",
+                    "contentUrl": "{{ absolute_url(asset('images/gallery/' ~ image.src)) }}",
+                    "description": "{{ image.alt }}",
+                    "name": "{{ image.title }}"
+                }{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ]
+    }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "VideoObject",
+            "name": "{{ videoTitle }}",
+            "description": "{{ videoDescription }}",
+            "thumbnailUrl": "{{ videoPoster }}",
+            "uploadDate": "2024-07-01T00:00:00+00:00",
+            "contentUrl": "{{ videoUrl }}",
+            "embedUrl": "{{ videoUrl }}",
+            "publisher": {
+                "@type": "Organization",
+                "name": "Zorglux",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "{{ logoUrl }}"
+                }
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+    {% set contentWrapperClasses = [
+        'flex',
+        'flex-row',
+        'grow',
+        'justify-center',
+        'items-center',
+    ]|join(' ') %}
+
+    {% set contentClasses = [
+        'w-full',
+        'px-5',
+        'md:w-2/3',
+    ]|join(' ') %}
+
+    <div class="pb-4  flex flex-col min-h-screen border-b border-b-gray-100 bg-gradient-to-b from-white via-blue-50 to-orange-50">
+        <header {{ stimulus_controller('menu_toggler') }} class="sticky top-0 bg-white z-[9990]">
+            {% include '@common/navbar.html.twig' %}
+        </header>
+
+        <div class="{{ contentWrapperClasses }}">
+            <div class="{{ contentClasses }}">
+                <h1 class="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold my-0">Zorglux</h1>
+                <h2 class="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold my-0 text-gray-700">Blog</h2>
+                <h2 class="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold my-0 text-gray-600">SEO</h2>
+                <br>
+                <p class="font-normal mb-4 text-md lg:text-lg">
+                    📖 Une place pour lire et écrire sur des sujets autour du référencement naturel.
+                </p>
+                <p class="font-normal mb-10 text-md lg:text-lg text-gray-600">
+                    ✍️ Zorglux offre une plateforme de blog où vous pouvez partager vos idées et expériences.
+                    Les articles sont optimisés pour être bien classés sur Google,
+                    vous aidant à atteindre un public plus large grâce à des pratiques SEO avancées.
+                </p>
+                <button
+                    {{ stimulus_controller('clickable', { url: path('blog_index'), title: 'Découvrir la liste des articles' }) }}
+                    {{ stimulus_action('clickable', 'visit', 'click') }}
+                        class="shadow-2xl bg-gradient-to-r from-indigo-600 to-orange-600 w-full lg:w-1/2 xl:1/3 text-white bg-black rounded-md px-4 py-2 md:px-6 md:py-3">
+                    🚀 Commencer à lire
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="latest-posts" class="{{ contentWrapperClasses }}">
+        <div class="{{ contentClasses }}">
+            <h2 class="font-bold">Les derniers articles</h2>
+            {% include '@public/partials/latest-posts.html.twig' %}
+        </div>
+    </div>
+
+    <div class="{{ contentWrapperClasses }}">
+        <div class="{{ contentClasses }}">
+            <h2 class="font-bold">Galeries</h2>
+            {% include '@public/partials/gallery.html.twig' with {
+                images: galleries,
+                withMoreLink: true,
+            } %}
+        </div>
+    </div>
+
+    <div id="presentation-video" class="{{ contentWrapperClasses }}">
+        <div class="{{ contentClasses }}">
+            <figure class="mb-4">
+                <video controls width="100%" poster="{{ videoPoster }}">
+                    <source src="{{ videoUrl }}" type="video/mp4" title="{{ videoTitle }}">
+                    Votre navigateur ne supporte pas les vidéos HTML5. Voici <a href="{{ videoUrl }}">un lien pour télécharger la vidéo</a> au lieu.
+                </video>
+                <figcaption class="text-sm text-gray-500 mt-2">{{ videoDescription }}</figcaption>
+            </figure>
+        </div>
+    </div>
+
+    {% include '@common/footer.html.twig' %}
+{% endblock %}

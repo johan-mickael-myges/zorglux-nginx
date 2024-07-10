@@ -1,0 +1,127 @@
+{% extends 'base.html.twig' %}
+
+{% set title = 'Zorglux - Contactez-nous' %}
+{% set description = "Besoin d'aide ? Contactez-nous dès aujourd'hui ! Vous pouvez nous joindre par téléphone, email, ou nous rendre visite à notre adresse à Paris. Nous sommes là pour vous aider avec toutes vos questions et besoins." %}
+{% set logoUrl = 'https://zorglux-bucket.s3.eu-north-1.amazonaws.com/zorglux.webp' %}
+{% set phone = '+33 7 69 34 87 44' %}
+{% set email = 'jotomatics@gmail.com' %}
+{% set address = '242 Fbg St Antoine, 75012 Paris' %}
+{% set mapUrl = 'https://maps.app.goo.gl/F1o72hBjfHv1cw8y8' %}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ absolute_url(path('public_contact')) }}">
+{% endblock %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block meta %}
+    <meta name="description" content="{{ description }}">
+    <meta name="author" content="Zorglux">
+{% endblock %}
+
+{% block meta_og %}
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:description" content="{{ description }}">
+    <meta property="og:image" content="{{ logoUrl }}">
+    <meta property="og:url" content="{{ path('public_contact') }}">
+{% endblock %}
+
+{% block meta_twitter %}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ title }}">
+    <meta name="twitter:description" content="{{ description }}">
+    <meta name="twitter:image" content="{{ logoUrl }}">
+{% endblock %}
+
+{% block jsonld %}
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Zorglux",
+            "url": "{{ absolute_url(path('public_index')) }}",
+            "logo": "{{ logoUrl }}",
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "telephone": "{{ phone }}",
+                "contactType": "Customer Service",
+                "areaServed": "FR",
+                "availableLanguage": ["French", "English"]
+            },
+            "sameAs": [
+                "https://fr.zorglux.works/",
+                "https://en.zorglux.works/",
+                "https://zorglux.works/",
+                "https://www.zorglux.works/"
+            ],
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "242 Fbg St Antoine",
+                "addressLocality": "Paris",
+                "postalCode": "75012",
+                "addressCountry": "FR"
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block body_header %}
+    {% include '@common/navbar.html.twig' %}
+{% endblock %}
+
+{% block body_content %}
+    <twig:Container>
+        <h1 class="text-4xl text-gray-800 mb-5">Contactez-nous</h1>
+
+        <section id="contact" class="mb-10">
+            <h2 class="mb-4 font-normal text-base">Besoin d'aide ? Contactez-nous dès aujourd'hui !</h2>
+            <div class="text-sm">
+                <div class="bg-gray-100 shadow mb-2 p-2 rounded">
+                    <span>Téléphone : </span>
+                    <a href="tel:{{ phone }}" class="">{{ phone }}</a>
+                </div>
+                <div class="bg-gray-100 shadow mb-2 p-2 rounded">
+                    <span>Email : </span>
+                    <a href="mailto:{{ email }}" class="">{{ email }}</a>
+                </div>
+                <div class="bg-gray-100 shadow mb-2 p-2 rounded">
+                    <span>Adresse : </span>
+                    <a href="{{ mapUrl }}" class="">{{ address }}</a>
+                </div>
+            </div>
+        </section>
+    </twig:Container>
+
+    {% set contentWrapperClasses = [
+        'flex',
+        'flex-row',
+        'grow',
+        'justify-center',
+        'items-center',
+    ]|join(' ') %}
+
+    {% set contentClasses = [
+        'w-full',
+        'px-5',
+        'md:w-2/3',
+    ]|join(' ') %}
+
+    <div id="latest-posts" class="{{ contentWrapperClasses }}">
+        <div class="{{ contentClasses }}">
+            <h2 class="font-bold">Les derniers articles</h2>
+            {% include '@public/partials/latest-posts.html.twig' %}
+        </div>
+    </div>
+
+    <div class="{{ contentWrapperClasses }}">
+        <div class="{{ contentClasses }}">
+            <h2 class="font-bold">Galeries photos</h2>
+            {% include '@public/partials/gallery.html.twig' with {
+                images: galleries,
+                withMoreLink: true,
+            } %}
+        </div>
+    </div>
+{% endblock %}

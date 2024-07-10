@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../zorglux-admin/.idea/zorglux-admin.iml" filepath="$PROJECT_DIR$/../zorglux-admin/.idea/zorglux-admin.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/zorglux-nginx.iml" filepath="$PROJECT_DIR$/.idea/zorglux-nginx.iml" />
     </modules>
   </component>

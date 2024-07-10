@@ -1,0 +1,80 @@
+<div
+    {{ attributes }}
+>
+    {% if this.variant == 'desktop' %}
+        <div
+            {{ stimulus_target('comments_toggler', 'desktopContainer') }}
+            data-comment="desktop"
+            class="z-[9999] translate-x-full transition-all ease-in-out w-1/4 bg-white fixed top-0 right-0 border h-screen p-4 overflow-y-scroll"
+        >
+            <div class="flex flex-row justify-between">
+                <h3>{{ this.commentCount }} réponse{{ this.commentCount > 1 ? 's' : '' }}</h3>
+                <button
+                    {{ stimulus_action('comments_toggler', 'toggle') }}
+                >
+                    <i class="text-2xl font-extrabold fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <textarea
+                class="w-full border p-2 rounded mt-2"
+                placeholder="Votre commentaire"
+                data-model="norender|currentComment"
+            ></textarea>
+
+            <button
+                class="w-full bg-black text-white px-4 py-2 rounded mt-2"
+                data-action="live#action"
+                data-live-action-param="addComment"
+            >
+                Commenter
+            </button>
+
+            <div>
+                <h4>Commentaires</h4>
+
+                {% for comment in this.blog.comments %}
+                    <twig:CommentItem :comment="comment" />
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <div
+            {{ stimulus_target('comments_toggler', 'mobileContainer') }}
+            data-comment="mobile"
+            class="z-[9999] translate-y-full transition-all ease-in-out w-full bg-white fixed top-0 left-0 shadow-inner border-t border-t-gray-200 h-screen p-4 overflow-auto touch-pan-y"
+        >
+            <div class="flex flex-row justify-between">
+                <h3>{{ this.commentCount }} réponse{{ this.commentCount > 1 ? 's' : '' }}</h3>
+                <button
+                    {{ stimulus_action('comments_toggler', 'toggle') }}
+                >
+                    <i class="text-2xl font-extrabold fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <textarea
+                class="w-full border p-2 rounded mt-2"
+                placeholder="Votre commentaire"
+                data-model="norender|currentComment"
+            ></textarea>
+
+            <button
+                class="w-full bg-black text-white px-4 py-2 rounded mt-2"
+                data-action="live#action"
+                data-live-action-param="addComment"
+            >
+                Commenter
+            </button>
+
+            <div>
+                <h4>Commentaires</h4>
+
+                {% for comment in this.blog.comments %}
+                    <twig:CommentItem :comment="comment" />
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+</div>

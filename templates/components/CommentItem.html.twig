@@ -1,0 +1,17 @@
+<div {{ attributes }}
+    class="px-2 py-2 border-b border-b-50 bg-gray-50 rounded mb-2"
+>
+    <div class="flex flex-row items-center">
+        <twig:Avatar
+            :img="this.comment.author.avatar"
+            size="30"
+            imageClasses="mr-1"
+            usernameClasses="text-xs font-semibold"
+        />
+        <div class="flex flex-col">
+            <span class="text-gray-700">{{ this.comment.author.username }}</span>
+            <span class="text-xs text-gray-500">{{ this.comment.createdAt|date }}</span>
+        </div>
+    </div>
+    <p class="text-sm text-gray-600 p-2">{{ this.comment.content }}</p>
+</div>
