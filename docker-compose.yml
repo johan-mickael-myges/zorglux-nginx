@@ -17,7 +17,7 @@ services:
     volumes:
       - .:/var/www/html
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
-      - ./certs:/etc/nginx/certs:ro
+      - ./certs:/etc/letsencrypt:rw
     depends_on:
       - php
       - certbot
@@ -25,7 +25,7 @@ services:
   certbot:
     image: certbot/certbot
     volumes:
-      - ./certs:/etc/letsencrypt
+      - ./certs:/etc/letsencrypt:rw
       - .:/var/www/html
 
   postgres:
