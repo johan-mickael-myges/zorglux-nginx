@@ -18,6 +18,7 @@ services:
       - .:/var/www/html
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
       - ./certs:/etc/letsencrypt:rw
+      - ./nginx_logs:/var/log/nginx
     depends_on:
       - php
       - certbot
@@ -47,3 +48,4 @@ volumes:
   certs:
   certbot-etc:
   var-lib-letsencrypt:
+  nginx_logs:
