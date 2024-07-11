@@ -17,6 +17,7 @@ services:
       - .:/var/www/html
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
       - ./docker/nginx/conf.d/adminer.conf:/etc/nginx/conf.d/adminer.conf
+      - /etc/nginx/certs:/etc/nginx/certs:ro
     depends_on:
       - php
 
