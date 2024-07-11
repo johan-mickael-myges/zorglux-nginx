@@ -112,3 +112,4 @@
 2024/07/11 18:22:34 [notice] 1#1: worker process 41 exited with code 0
 2024/07/11 18:22:34 [notice] 1#1: exit
 2024/07/11 18:23:46 [emerg] 1#1: cannot load certificate "/etc/letsencrypt/live/app.zorglux.works/fullchain.pem": BIO_new_file() failed (SSL: error:80000002:system library::No such file or directory:calling fopen(/etc/letsencrypt/live/app.zorglux.works/fullchain.pem, r) error:10000080:BIO routines::no such file)
+2024/07/11 18:26:40 [emerg] 1#1: cannot load certificate "/etc/letsencrypt/live/app.zorglux.works/fullchain.pem": BIO_new_file() failed (SSL: error:80000002:system library::No such file or directory:calling fopen(/etc/letsencrypt/live/app.zorglux.works/fullchain.pem, r) error:10000080:BIO routines::no such file)
