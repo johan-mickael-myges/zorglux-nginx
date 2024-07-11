@@ -23,3 +23,4 @@ yarn-error.log
 /public/media/cache/
 ###< liip/imagine-bundle ###
 /nginx_logs/
+/adminer_logs/
