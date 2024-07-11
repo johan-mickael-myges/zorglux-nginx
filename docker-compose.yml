@@ -18,7 +18,7 @@ services:
     volumes:
       - .:/var/www/html
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
-      - ./config/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/conf.d/adminer.conf:/etc/nginx/conf.d/adminer.conf
     depends_on:
       - php
 
